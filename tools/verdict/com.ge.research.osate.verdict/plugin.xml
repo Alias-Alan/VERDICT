@@ -201,7 +201,7 @@
        <command
              categoryId="com.ge.research.osate.verdict.commands"
              id="com.ge.research.osate.verdict.commands.stop"
-             name="Stop MBAA/MBAS/CRV">
+             name="Stop MBAS/CRV">
        </command>
        <command
              categoryId="com.ge.research.osate.verdict.commands"
