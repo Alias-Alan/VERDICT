@@ -5,11 +5,12 @@
 [OSATE](https://osate.org/about-osate.html) is an Open Source AADL
 Tool Environment based on the Eclipse Modeling Tools IDE.  The VERDICT
 tools consist of an OSATE plugin and a set of VERDICT back-end
-programs invoked by the plugin.  The plugin has two ways to call the
-back-end programs; it can run an executable jar called
-verdict-bundle-\<VERSION\>-capsule.jar in a subprocess or it can run
-a Docker image called gehighassurance/verdict in a temporary
-container.
+programs invoked by the plugin to perform cyber resiliency analysis
+(CRV) and model based architecture analysis (MBAA).  The plugin has
+two ways to call the back-end programs; it can run an executable jar
+called verdict-bundle-app-\<VERSION\>-SNAPSHOT-capsule.jar in a
+subprocess or it can run a Docker image called gehighassurance/verdict
+in a temporary container.
 
 The OSATE plugin sources are in this [verdict](verdict) subdirectory
 and the back-end program sources are in this
@@ -157,7 +158,7 @@ image or our back-end programs:
    empty and follow steps 6-11 instead.
 
 7. Click the Browse... button next to the "Bundle Jar:" field,
-   navigate to the "verdict-bundle-\<VERSION\>-capsule.jar" file
+   navigate to the "verdict-bundle-app-\<VERSION\>-capsule.jar" file
    inside the "extern" folder, and make it the field's setting.
 
 8. Click the Browse... button next to the "Aadl2iml Binary:" field,
@@ -213,9 +214,5 @@ back-end tool chain programs in additional subprocesses inside the
 temporary container or directly on your system as well.
 
 For further information about how to analyze a model's system
-architecture using our VERDICT tools, please read our VERDICT [User
-Manual](https://github.com/ge-high-assurance/VERDICT/wiki/VERDICT-Modeling-Style-Guide-&-User-Manual:-V1-to-support-VERDICT-VM-19.1-Tool-Assessment-%233).
-
-## Setting up CI/CD environment in GitHub Actions
-
-This is a placeholder.
+architecture using our VERDICT tools, please read our VERDICT wiki's
+[documentation](https://github.com/ge-high-assurance/VERDICT/wiki).

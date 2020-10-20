@@ -1,5 +1,6 @@
-# Builds the verdict-dev Docker image on each push to master
-# Possibly to be done: push to a verdict-dev update site too
+# Builds a Verdict release for developers on each push to master:
+#        - verdict-dev Docker image
+#        - verdict-dev update site
 
 name: Verdict main build
 
@@ -75,16 +76,39 @@ jobs:
         cd tools/verdict-back-ends/soteria_pp
         opam exec make
 
-    - name: Build verdict-dev image
-      uses: docker/build-push-action@v1
-      env:
-        DOCKER_BUILDKIT: 1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
       with:
-        repository: gehighassurance/verdict-dev
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        tags: latest
-        path: tools/verdict-back-ends
-        build_args: BUILDKIT_INLINE_CACHE=1
-        cache_froms: gehighassurance/verdict-dev:latest
+
+    - name: Build and push verdict-dev image
+      uses: docker/build-push-action@v2
+      with:
+        context: tools/verdict-back-ends
+        file: tools/verdict-back-ends/Dockerfile
         push: true
+        cache-from: type=registry,ref=gehighassurance/verdict-dev:latest
+        cache-to: type=inline
+        tags: gehighassurance/verdict-dev:latest
+
+    - name: Check out VERDICT-update-sites
+      uses: actions/checkout@v2
+      with:
+        repository: ge-high-assurance/VERDICT-update-sites
+        token: ${{ secrets.CI_PAT }}
+        path: VERDICT-update-sites
+
+    - name: Update verdict-dev in VERDICT-update-sites
+      run: |
+        cd VERDICT-update-sites
+        rm -rf verdict-dev
+        mv ../tools/verdict/com.ge.research.osate.verdict.updatesite/target/repository verdict-dev
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "Update verdict-dev in VERDICT-update-sites"
+        git push
